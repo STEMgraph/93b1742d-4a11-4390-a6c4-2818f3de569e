@@ -1,51 +1,116 @@
 <!---
 {
-  "depends_on": [],
+  "id": "93b1742d-4a11-4390-a6c4-2818f3de569e",
+  "depends_on": ["293aa994-02be-42eb-8859-f7e21029a875"],
   "author": "Stephan Bökelmann",
-  "first_used": "2025-03-17",
-  "keywords": ["learning", "exercises", "education", "practice"]
+  "first_used": "2025-06-04",
+  "keywords": ["SVG", "viewport", "coordinate system", "scaling", "markup"]
 }
 --->
 
-# Learning Through Exercises
+# Advanced SVG: Coordinate Systems, Viewports, and Scaling
+
+> In this exercise you will learn how SVG handles coordinate systems, viewports, and transformations. Furthermore we will explore how the rendering process maps your SVG markup onto the displayed graphics and how to control this mapping for more flexible designs.
 
 ## Introduction
-Learning by doing is one of the most effective methods to acquire new knowledge and skills. Rather than passively consuming information, actively engaging in problem-solving fosters deeper understanding and long-term retention. By working through structured exercises, students can grasp complex concepts in a more intuitive and applicable way. This approach is particularly beneficial in technical fields like programming, mathematics, and engineering.
+
+Every time an SVG file is rendered, the rendering engine reads the XML markup and converts the defined shapes, paths, and text into visual elements. This process involves interpreting coordinate values, applying transformations, and mapping everything onto the pixel grid of your display. To achieve this, SVG introduces a flexible system of *viewports*, *user coordinate systems*, and *transformation matrices*.
+
+By default, the `width` and `height` attributes of the `<svg>` element define the viewport — the rectangular area into which your drawing is rendered. Inside this viewport, all coordinates are interpreted relative to a user coordinate system that typically starts at the top-left corner `(0,0)` and extends along the x and y axes.
+
+The `viewBox` attribute allows you to decouple the coordinate system from the physical display size. It defines a rectangle in user coordinates that will be mapped to fit the viewport. This mapping can be scaled and shifted, which enables you to work with logical coordinates that are independent of actual screen pixels.
+
+Transformations (like `translate`, `scale`, `rotate`, and `skew`) further modify how individual elements are rendered inside the coordinate space. These transformations are applied via transformation matrices during rendering and allow for powerful composition of complex scenes.
+
+Understanding these mechanisms is crucial when designing scalable graphics, responsive designs, or technical diagrams where precision and scaling behavior matter.
 
 ### Further Readings and Other Sources
-- [The Importance of Practice in Learning](https://www.sciencedirect.com/science/article/pii/S036013151300062X)
-- "The Art of Learning" by Josh Waitzkin
-- [How to Learn Effectively: 5 Key Strategies](https://www.edutopia.org/article/5-research-backed-learning-strategies)
+
+* [MDN Web Docs: SVG Coordinate Systems](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox)
+* [W3C SVG Specification: Coordinate Systems](https://www.w3.org/TR/SVG2/coords.html)
+* [A visual explanation of viewBox on CSS-Tricks](https://css-tricks.com/scale-svg/)
+* [SVG Transformations Tutorial (YouTube)](https://www.youtube.com/watch?v=pm2tSxmzJW0)
 
 ## Tasks
-1. **Write a Summary**: Summarize the concept of "learning by doing" in 3-5 sentences.
-2. **Example Identification**: List three examples from your own experience where learning through exercises helped you understand a topic better.
-3. **Create an Exercise**: Design a simple exercise for a topic of your choice that someone else could use to practice.
-4. **Follow an Exercise**: Find an online tutorial that includes exercises and complete at least two of them.
-5. **Modify an Existing Exercise**: Take a basic problem from a textbook or online course and modify it to make it slightly more challenging.
-6. **Pair Learning**: Explain a concept to a partner and guide them through an exercise without giving direct answers.
-7. **Review Mistakes**: Look at an exercise you've previously completed incorrectly. Identify why the mistake happened and how to prevent it in the future.
-8. **Time Challenge**: Set a timer for 10 minutes and try to solve as many simple exercises as possible on a given topic.
-9. **Self-Assessment**: Create a checklist to evaluate your own performance in completing exercises effectively.
-10. **Reflect on Progress**: Write a short paragraph on how this structured approach to exercises has influenced your learning.
 
-<details>
-  <summary>Tip for Task 5</summary>
-  Try making small adjustments first, such as increasing the difficulty slightly or adding an extra constraint.
-</details>
+### Task 1: Using the Default Coordinate System
 
-## Questions
-1. What are the main benefits of learning through exercises compared to passive learning?
-2. How do exercises improve long-term retention?
-3. Can you think of a subject where learning through exercises might be less effective? Why?
-4. What role does feedback play in learning through exercises?
-5. How can self-designed exercises improve understanding?
-6. Why is it beneficial to review past mistakes in exercises?
-7. How does explaining a concept to someone else reinforce your own understanding?
-8. What strategies can you use to stay motivated when practicing with exercises?
-9. How can timed challenges contribute to learning efficiency?
-10. How do exercises help bridge the gap between theory and practical application?
+1. Create a new SVG file:
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+       <rect x="0" y="0" width="400" height="400" fill="lightgray" />
+       <circle cx="100" cy="100" r="50" fill="red" />
+   </svg>
+   ```
+2. Save and preview your file. Observe how the circle is positioned directly by absolute coordinates.
+
+### Task 2: Introducing the viewBox Attribute
+
+1. Modify the `<svg>` element to include a viewBox:
+
+   ```xml
+   <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 200 200">
+   ```
+2. The coordinate system is now scaled so that `(0,0)` to `(200,200)` maps into the `400x400` viewport.
+3. Add a new circle to verify scaling:
+
+   ```xml
+   <circle cx="150" cy="150" r="30" fill="blue" />
+   ```
+4. Save and preview. Notice how coordinates are scaled automatically.
+
+### Task 3: Panning and Zooming with viewBox
+
+1. Change the viewBox to zoom into the top-left corner:
+
+   ```xml
+   viewBox="0 0 100 100"
+   ```
+2. Save and preview. The shapes now appear larger because the 100x100 user coordinates are stretched over the 400x400 viewport.
+3. Shift the viewBox to pan the visible area:
+
+   ```xml
+   viewBox="50 50 100 100"
+   ```
+4. Save and observe how different parts of the drawing come into view.
+
+### Task 4: Apply Transformations
+
+1. Add a group with a translation transformation:
+
+   ```xml
+   <g transform="translate(50, 50)">
+       <rect x="0" y="0" width="50" height="50" fill="green" />
+   </g>
+   ```
+2. The rectangle's coordinates are now relative to the translated origin.
+3. Combine transformations:
+
+   ```xml
+   <g transform="translate(50,50) rotate(45)">
+       <rect x="0" y="0" width="50" height="50" fill="purple" />
+   </g>
+   ```
+4. Save and observe both translation and rotation applied together.
+
+### Task 5: Combining Viewport and Transformations
+
+1. Set up the following complete SVG structure:
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="-100 -100 200 200">
+       <rect x="-100" y="-100" width="200" height="200" fill="lightgray" />
+       <circle cx="0" cy="0" r="50" fill="orange" />
+       <g transform="scale(1.5)">
+           <rect x="-20" y="-20" width="40" height="40" fill="red" />
+       </g>
+   </svg>
+   ```
+2. Save and observe how the negative coordinates and scaling affect rendering.
 
 ## Advice
-Practice consistently and seek out diverse exercises that challenge different aspects of a topic. Combine exercises with reflection and feedback to maximize your learning efficiency. Don't hesitate to adapt exercises to fit your own needs and ensure that you're actively engaging with the material, rather than just going through the motions.
 
+Mastering SVG's coordinate systems, viewports, and transformations is key to producing flexible, scalable graphics that adapt to different output sizes and resolutions. The combination of `viewBox` and transformations allows you to think logically about your design's geometry while ensuring precise rendering on any device. Practice modifying the viewBox and applying transformations to build an intuitive sense for how these mappings work. With these skills, you are now equipped to design complex layouts, responsive graphics, and precise technical diagrams entirely in SVG markup.
