@@ -1,6 +1,7 @@
 <!---
 {
   "id": "93b1742d-4a11-4390-a6c4-2818f3de569e",
+  "teaches": "Advanced SVG: Coordinate Systems, Viewports, and Scaling",
   "depends_on": ["293aa994-02be-42eb-8859-f7e21029a875"],
   "author": "Stephan Bökelmann",
   "first_used": "2025-06-04",
